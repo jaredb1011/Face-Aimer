@@ -1,7 +1,7 @@
 # Face Aimer #
 
 ## Overview ##
-A Python program (Windows only) for controlling your mouse using your face.
+A Python program (Windows only, Python 3.8+) for controlling your mouse using your face.
 Uses your webcam and tracks your face's orientation using a trained model from dlib.
 There are two modes of control, absolute mouse position, and joystick.
 
