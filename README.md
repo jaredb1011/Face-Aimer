@@ -16,7 +16,7 @@ There are two modes of control, absolute mouse position, and joystick.
 3. Download this [trained model](http://dlib.net/files/shape_predictor_68_face_landmarks.dat.bz2) from dlib and place it into the ***face_detection*** folder.
 
 ## Execution ##
-1. Run the following code from a terminal: `python <install_path>\face_aimer.py`
+1. Run the program: `python <install_path>\face_aimer.py`
 2. Calibrate the camera by following the prompts in the Face Aimer window that appears.
 3. The program will now begin controlling the mouse. While the Face Aimer window is in focus:
    - Press the ESC key to quit the program
