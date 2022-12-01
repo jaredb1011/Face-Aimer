@@ -1,16 +1,33 @@
 # Face Aimer #
 
 ## Overview ##
-Placeholder
+A Python program (Windows only) for controlling your mouse using your face.
+Uses your webcam and tracks your face's orientation using a trained model from dlib.
+There are two modes of control, absolute mouse position, and joystick.
 
 ## Installation ##
-1. Placeholder
-2. Download this [trained model](http://dlib.net/files/shape_predictor_68_face_landmarks.dat.bz2) from dlib and place it into the face_detection folder
-3. Placeholder
+1. Download and extract, or clone this repo to a location of your choice.
+2. Install Prerequisites (recommend using virtualenv):
+   1. `pip install opencv-python`
+   2. `pip install dlib `
+   3. `pip install imutils`
+   4. `pip install pynput`
+   5. `pip install pywin32`
+3. Download this [trained model](http://dlib.net/files/shape_predictor_68_face_landmarks.dat.bz2) from dlib and place it into the ***face_detection*** folder.
 
 ## Execution ##
-Placeholder
-![face landmarks](face_detection/facial_landmarks_68markup.jpg)
+1. Run the following code from a terminal: `python <install_path>\face_aimer.py`
+2. Calibrate the camera by following the prompts in the Face Aimer window that appears.
+3. The program will now begin controlling the mouse. While the Face Aimer window is in focus:
+   - Press the ESC key to quit the program
+   - Press the TAB key to switch between **mouse** and **stick** control modes
+   - Press the SPACEBAR to pause and unpause the program's control of your mouse
+
+## To-Do ##
+- [ ] Add text to indicate the currently selected control mode
+- [ ] Improve facial tracking by utilizing more tracked points from the model
+- [ ] Create better installation process
+- [ ] Implement offsets based on head translation so you don't need to keep your head locked in place
 
 ## Acknowledgements ##
 - Referenced Satya Mallick's tutorial: https://learnopencv.com/head-pose-estimation-using-opencv-and-dlib/
