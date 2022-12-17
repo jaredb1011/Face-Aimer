@@ -52,7 +52,7 @@ class faceAimer():
 
         # facial recognition
         self.detector = dlib.get_frontal_face_detector()
-        self.predictor = dlib.shape_predictor("face_detection\shape_predictor_68_face_landmarks.dat")
+        self.predictor = dlib.shape_predictor("resources\shape_predictor_68_face_landmarks.dat")
 
         # 3D facial points - numbers in () indicate numbers on markup reference image - 1
         self.model_points = np.array([

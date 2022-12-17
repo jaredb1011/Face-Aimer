@@ -13,7 +13,7 @@ There are two modes of control, absolute mouse position, and joystick.
    3. `pip install imutils`
    4. `pip install pynput`
    5. `pip install pywin32`
-3. Download this [trained model](http://dlib.net/files/shape_predictor_68_face_landmarks.dat.bz2) from dlib and place it into the ***face_detection*** folder.
+3. Download this [trained model](http://dlib.net/files/shape_predictor_68_face_landmarks.dat.bz2) from dlib and place it into the ***resources*** folder.
 
 ## Execution ##
 1. Run the program: `python <install_path>\face_aimer.py`
