@@ -26,8 +26,9 @@ There are two modes of control, absolute mouse position, and joystick.
 ## To-Do ##
 - [ ] Add text to indicate the currently selected control mode
 - [ ] Improve facial tracking by utilizing more tracked points from the model
-- [ ] Create better installation process
+- [ ] Add re-calibrate option
 - [ ] Implement offsets based on head translation so you don't need to keep your head locked in place
+- [ ] Create better installation process
 
 ## Acknowledgements ##
 - Referenced Satya Mallick's tutorial: https://learnopencv.com/head-pose-estimation-using-opencv-and-dlib/

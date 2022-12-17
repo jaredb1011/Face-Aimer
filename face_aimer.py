@@ -23,6 +23,7 @@ class faceAimer():
         self.landmarks_color = face_aimer_settings['facial_landmarks_color_bgr']
 
         # text settings
+        self.show_text = True
         self.font_face = cv.FONT_HERSHEY_PLAIN
         self.font_scale = 0.85
         self.font_color = (0, 0, 0)
@@ -35,10 +36,12 @@ class faceAimer():
         self.switch_mode_text = "'TAB' to switch control modes"
         self.pause_text = "'SPACEBAR' to pause control input"
         self.unpause_text = "'SPACEBAR' to resume control input"
-        # get size of quit text to calculate secondary text position
+        self.hide_controls_text = "'H' to hide controls"
+        # get size of quit text to calculate additional text positions
         (_, text_height), _ = cv.getTextSize(self.quit_text, self.font_face, self.font_scale, self.font_thickness)
         self.secondary_text_position = (self.primary_text_position[0], int(self.primary_text_position[1] + text_height*1.4))
         self.tertiary_text_position = (self.secondary_text_position[0], int(self.secondary_text_position[1] + text_height*1.4))
+        self.fourth_text_position = (self.tertiary_text_position[0], int(self.tertiary_text_position[1] + text_height*1.4))
 
         # open video camera
         try:
@@ -255,22 +258,28 @@ class faceAimer():
             # get current nose & pose position
             (self.nosePoint, self.posePoint) = self.getNoseAndPosePoint(frame)
 
-            # write quit text
-            cv.putText(frame, self.quit_text, self.primary_text_position, self.font_face,
-                       self.font_scale, self.font_color, self.font_thickness, self.font_linetype)
-            # write switch control text
-            cv.putText(frame, self.switch_mode_text, self.secondary_text_position, self.font_face,
-                        self.font_scale, self.font_color, self.font_thickness, self.font_linetype)
-
-            # add targets to controller queue and write pause text
+            # add targets to controller queue
             if self.paused:
                 self.controller_queue.put((-1, -1), block=False)
-                cv.putText(frame, self.unpause_text, self.tertiary_text_position, self.font_face,
-                           self.font_scale, self.font_color, self.font_thickness, self.font_linetype)
+                pause_status_text = self.unpause_text
             if not self.paused:
                 self.controller_queue.put(self.posePoint, block=False)
-                cv.putText(frame, self.pause_text, self.tertiary_text_position, self.font_face,
-                           self.font_scale, self.font_color, self.font_thickness, self.font_linetype)
+                pause_status_text = self.pause_text
+
+            # draw controls & status text
+            if self.show_text:
+                # write quit text
+                cv.putText(frame, self.quit_text, self.primary_text_position, self.font_face,
+                        self.font_scale, self.font_color, self.font_thickness, self.font_linetype)
+                # write switch control text
+                cv.putText(frame, self.switch_mode_text, self.secondary_text_position, self.font_face,
+                            self.font_scale, self.font_color, self.font_thickness, self.font_linetype)
+                # write paused status text
+                cv.putText(frame, pause_status_text, self.tertiary_text_position, self.font_face,
+                        self.font_scale, self.font_color, self.font_thickness, self.font_linetype)
+                # write hide controls text
+                cv.putText(frame, self.hide_controls_text, self.fourth_text_position, self.font_face,
+                        self.font_scale, self.font_color, self.font_thickness, self.font_linetype)
 
             # if couldn't find a face, skip all this
             if not (self.posePoint[0] == -1):
@@ -284,6 +293,7 @@ class faceAimer():
                 for tracked_pts in self.image_pts:
                     cv.circle(frame, (int(tracked_pts[0]), int(tracked_pts[1])), 3, self.landmarks_color, -1)
 
+                # draw mode-specific overlays
                 if self.control_mode == 'stick':
                     # draw gaze line from nose to pose point
                     cv.line(frame, nosePointInt, posePointInt, self.gaze_line_color, 2)
@@ -303,11 +313,11 @@ class faceAimer():
 
             # get user input
             key = cv.waitKey(1)
-            if key == 27:
-                # if 'esc' is pressed, break out of loop
+            if key == 27: # 'ESC' key
+                #break out of loop
                 break
-            elif key == 9:
-                # if tab is pressed, switch control modes
+            elif key == 9: # 'TAB' key
+                # switch control modes
                 # stop current controller thread
                 self.stop_controller_event.set()
                 self.controller_thread.join()
@@ -319,9 +329,12 @@ class faceAimer():
                 # initialize new controller thread
                 self.stop_controller_event.clear()
                 self.startControllerThread()
-            elif key == 32:
-                # if spacebar is pressed, toggle pause
+            elif key == 32: # 'SPACEBAR'
+                # toggle pause
                 self.paused = not self.paused
+            elif (key == 72) or (key == 104): # 'H' or 'h' key
+                # toggle hiding controls text
+                self.show_text = not self.show_text
 
         # shutdown
         self.shutdown()

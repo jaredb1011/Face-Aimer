@@ -11,8 +11,8 @@ face_aimer_settings = {
     'turn_speed_v' : 30, # stick controls - vertical turn speed
     'move_speed' : 80, # mouse controls - mouse movement speed
     'move_smoothing' : 4, # mouse controls - how many camera frames to buffer (increases smoothness, adds latency)
-    'marker_color_bgr' : (255,255,0),
-    'gaze_line_color_bgr' : (255, 255, 0),
-    'deadzone_color_bgr' : (0, 255, 0),
-    'facial_landmarks_color_bgr' : (0, 0, 255)
+    'marker_color_bgr' : (255,255,0), # mouse controls - color of the crosshair
+    'gaze_line_color_bgr' : (255, 255, 0), # stick controls - color of the stick mode line coming out of your nose
+    'deadzone_color_bgr' : (0, 255, 0), # stick controls - color of the deadzone circle
+    'facial_landmarks_color_bgr' : (0, 0, 255) # color of the tracking dots on your face
 }
