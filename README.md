@@ -25,7 +25,7 @@ There are two modes of control, absolute mouse position, and joystick.
 
 ## To-Do ##
 - [x] Add text to indicate the currently selected control mode
-- [ ] Improve facial tracking by utilizing more tracked points from the model
+- [x] Improve facial tracking by utilizing more tracked points from the model
 - [ ] Add re-calibrate option
 - [ ] Implement offsets based on head translation so you don't need to keep your head locked in place
 - [ ] Create better installation process
