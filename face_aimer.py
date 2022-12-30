@@ -56,19 +56,40 @@ class faceAimer():
 
         # 3D facial points - numbers in () indicate numbers on markup reference image - 1
         self.model_points = np.array([
-            (0.0, 0.0, 0.0),            # Nose tip (33)
-            (0.0, 100.0, -50.0),        # middle of nose (28)
-            (0.0, -330.0, -65.0),       # Chin (8)
-            (-225.0, 170.0, -135.0),    # Right eye right corner (36)(from image subject perspective)
-            (225.0, 170.0, -135.0),     # left eye left corner (45)
-            (-150.0, -150.0, -125.0),   # right Mouth corner (48)
-            (150.0, -150.0, -125.0),    # left mouth corner (54)
-            (-225.0, 245.0, -105.0),    # right eyebrow (19)
-            (225.0, 245.0, -105.0),     # left eyebrow (24)
-            (-340.0, 10.0, -300.0),     # right cheek (1)
-            (340.0, 10.0, -300.0),      # left cheek (15)
-            (-260, -220, -190),         # right jaw (5)
-            (260, -220, -190)           # left jaw (11)
+            (-350.0,120.0,-310.0),      # 0 - right cheek
+            (-345.0,35.0,-280.0),       # 1 - right cheek
+            (-330.0,-50.0,-250.0),      # 2 - right cheek
+            (-310.0,-135.0,-220.0),     # 3 - right cheek
+            (-260.0, -210.0, -190.0),   # 4 - right jaw
+            (-200.0,-260.0,-158.75),    # 5 - right jaw
+            (-140.0,-290.0,-127.5),     # 6 - right jaw
+            (-70.0,-320.0,-96.25),      # 7 - right chin
+            (0.0, -330.0, -65.0),       # 8 - chin
+            (70.0,-320.0,-96.25),       # 9 - left chin
+            (140.0,-290.0,-127.5),      # 10 - left jaw
+            (200.0,-260.0,-158.75),     # 11 - left jaw
+            (260.0, -210.0, -190.0),    # 12 - left jaw
+            (310.0,-135.0,-220.0),      # 13 - left cheek
+            (330.0,-50.0,-250.0),       # 14 - left cheek
+            (345.0,35.0,-280.0),        # 15 - left cheek
+            (350.0,120.0,-310.0),       # 16 - left cheek
+            (-225.0, 245.0, -105.0),    # 19 - right middle eyebrow
+            (225.0, 245.0, -105.0),     # 24 - left middle eyebrow
+            (0.0, 170.0, -100.0),       # 27 - top of nose
+            (0.0, 130.0, -55.0),        # 28 - middle of nose
+            (0.0, 90.0, -30.0),         # 29 - middle of nose
+            (0.0, 50.0, -15.0),         # 30 - middle of nose
+            (-60.0, 15.0, -30.0),       # 31 - nose tip right
+            (-30.0, 5.0, -15.0),        # 32 - nose tip right
+            (0.0, 0.0, 0.0),            # 33 - nose tip middle
+            (30.0, 5.0, -15.0),         # 34 - nose tip left
+            (60.0, 15.0, -30.0),        # 35 - nose tip left
+            (-240.0, 170.0, -135.0),    # 36 - Right eye outer corner
+            (-115.0, 170.0, -135.0),    # 39 - Right eye inner corner
+            (115.0, 170.0, -135.0),     # 42 - left eye inner corner
+            (240.0, 170.0, -135.0),     # 45 - left eye outer corner
+            (-150.0, -150.0, -125.0),   # 48 - right mouth corner
+            (150.0, -150.0, -125.0)     # 54 - left mouth corner
         ], dtype=np.float64)
 
         # camera parameters (default params but could be calibrated)
@@ -131,7 +152,7 @@ class faceAimer():
             # if spacebar is pressed, move to next stage
             key = cv.waitKey(1)
             if key == 32:
-                calibration_point = self.getNoseAndPosePoint(frame)[1]
+                calibration_point = self.trackFace(frame)[1]
                 if calibration_point == (-1, -1):
                     print("COULDN'T FIND FACE, TRY AGAIN")
                 else:
@@ -163,8 +184,8 @@ class faceAimer():
 
         return
 
-    def getNoseAndPosePoint(self, frame):
-        # returns x and y values for nose tip and pose position. Not scaled or adjusted
+    def trackFace(self, frame):
+        # updates face landmarks and returns x and y values for nose tip and pose position. Not scaled or adjusted
 
         # convert frame to grayscale
         gray = cv.cvtColor(frame, cv.COLOR_BGR2GRAY)
@@ -181,19 +202,40 @@ class faceAimer():
             self.landmarks = face_utils.shape_to_np(self.landmarks)
 
             # get relevant points
-            self.image_pts = np.array([self.landmarks[33],      # nose tip
-                                       self.landmarks[28],      # mid nose
+            self.image_pts = np.array([self.landmarks[0],       # right cheek
+                                       self.landmarks[1],       # right cheek
+                                       self.landmarks[2],       # right cheek
+                                       self.landmarks[3],       # right cheek
+                                       self.landmarks[4],       # right jaw
+                                       self.landmarks[5],       # right jaw
+                                       self.landmarks[6],       # right jaw
+                                       self.landmarks[7],       # right chin
                                        self.landmarks[8],       # chin
-                                       self.landmarks[36],      # right eye
-                                       self.landmarks[45],      # left eye
-                                       self.landmarks[48],      # mouth right
-                                       self.landmarks[54],      # mouth left
+                                       self.landmarks[9],       # left chin
+                                       self.landmarks[10],      # left jaw
+                                       self.landmarks[11],      # left jaw
+                                       self.landmarks[12],      # left jaw
+                                       self.landmarks[13],      # left cheek
+                                       self.landmarks[14],      # left cheek
+                                       self.landmarks[15],      # left cheek
+                                       self.landmarks[16],      # left cheek
                                        self.landmarks[19],      # right eyebrow
                                        self.landmarks[24],      # left eyebrow
-                                       self.landmarks[1],       # right cheek
-                                       self.landmarks[15],      # left cheek
-                                       self.landmarks[5],       # right jaw
-                                       self.landmarks[11]       # left jaw
+                                       self.landmarks[27],      # top nose
+                                       self.landmarks[28],      # mid nose
+                                       self.landmarks[29],      # mid nose
+                                       self.landmarks[30],      # mid nose
+                                       self.landmarks[31],      # nose tip right
+                                       self.landmarks[32],      # nose tip right
+                                       self.landmarks[33],      # nose tip center
+                                       self.landmarks[34],      # nose tip left
+                                       self.landmarks[35],      # nose tip left
+                                       self.landmarks[36],      # right eye outer corner
+                                       self.landmarks[39],      # right eye inner corner
+                                       self.landmarks[42],      # left eye inner corner
+                                       self.landmarks[45],      # left eye outer corner
+                                       self.landmarks[48],      # mouth right
+                                       self.landmarks[54]       # mouth left
                                        ], dtype=np.float32)
 
             # solve for PnP
@@ -256,7 +298,7 @@ class faceAimer():
             frame = cv.flip(frame, 1)
 
             # get current nose & pose position
-            (self.nosePoint, self.posePoint) = self.getNoseAndPosePoint(frame)
+            (self.nosePoint, self.posePoint) = self.trackFace(frame)
 
             # add targets to controller queue
             if self.paused:
@@ -291,7 +333,7 @@ class faceAimer():
 
                 # draw facial landmarks on frame
                 for tracked_pts in self.image_pts:
-                    cv.circle(frame, (int(tracked_pts[0]), int(tracked_pts[1])), 3, self.landmarks_color, -1)
+                    cv.circle(frame, (int(tracked_pts[0]), int(tracked_pts[1])), 2, self.landmarks_color, -1)
 
                 # draw mode-specific overlays
                 if self.control_mode == 'stick':
