@@ -33,7 +33,7 @@ class faceAimer():
         # text overlays
         self.primary_text_position = (10, 10)
         self.quit_text = "'ESC' to quit"
-        self.switch_mode_text = "'TAB' to switch control modes"
+        self.switch_mode_text = f"'TAB' to switch control modes | {self.control_mode}"
         self.pause_text = "'SPACEBAR' to pause control input"
         self.unpause_text = "'SPACEBAR' to resume control input"
         self.hide_controls_text = "'H' to hide controls"
@@ -326,6 +326,8 @@ class faceAimer():
                     self.control_mode = 'stick'
                 elif self.control_mode == 'stick':
                     self.control_mode = 'mouse'
+                # set new control text
+                self.switch_mode_text = f"'TAB' to switch control modes | {self.control_mode}"
                 # initialize new controller thread
                 self.stop_controller_event.clear()
                 self.startControllerThread()

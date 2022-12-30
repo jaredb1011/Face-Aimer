@@ -24,7 +24,7 @@ There are two modes of control, absolute mouse position, and joystick.
    - Press the SPACEBAR to pause and unpause the program's control of your mouse
 
 ## To-Do ##
-- [ ] Add text to indicate the currently selected control mode
+- [x] Add text to indicate the currently selected control mode
 - [ ] Improve facial tracking by utilizing more tracked points from the model
 - [ ] Add re-calibrate option
 - [ ] Implement offsets based on head translation so you don't need to keep your head locked in place
