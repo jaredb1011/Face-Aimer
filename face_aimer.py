@@ -7,8 +7,8 @@ import numpy as np
 from imutils import face_utils
 
 from input_controllers import mouseController, stickController
+from resources.facial_points_3d import model_points
 from settings import face_aimer_settings
-
 
 class faceAimer():
 
@@ -33,7 +33,7 @@ class faceAimer():
         # text overlays
         self.primary_text_position = (10, 10)
         self.quit_text = "'ESC' to quit"
-        self.switch_mode_text = "'TAB' to switch control modes"
+        self.switch_mode_text = f"'TAB' to switch control modes | {self.control_mode}"
         self.pause_text = "'SPACEBAR' to pause control input"
         self.unpause_text = "'SPACEBAR' to resume control input"
         self.hide_controls_text = "'H' to hide controls"
@@ -53,23 +53,7 @@ class faceAimer():
         # facial recognition
         self.detector = dlib.get_frontal_face_detector()
         self.predictor = dlib.shape_predictor("resources\shape_predictor_68_face_landmarks.dat")
-
-        # 3D facial points - numbers in () indicate numbers on markup reference image - 1
-        self.model_points = np.array([
-            (0.0, 0.0, 0.0),            # Nose tip (33)
-            (0.0, 100.0, -50.0),        # middle of nose (28)
-            (0.0, -330.0, -65.0),       # Chin (8)
-            (-225.0, 170.0, -135.0),    # Right eye right corner (36)(from image subject perspective)
-            (225.0, 170.0, -135.0),     # left eye left corner (45)
-            (-150.0, -150.0, -125.0),   # right Mouth corner (48)
-            (150.0, -150.0, -125.0),    # left mouth corner (54)
-            (-225.0, 245.0, -105.0),    # right eyebrow (19)
-            (225.0, 245.0, -105.0),     # left eyebrow (24)
-            (-340.0, 10.0, -300.0),     # right cheek (1)
-            (340.0, 10.0, -300.0),      # left cheek (15)
-            (-260, -220, -190),         # right jaw (5)
-            (260, -220, -190)           # left jaw (11)
-        ], dtype=np.float64)
+        self.model_points = model_points # 3D facial points
 
         # camera parameters (default params but could be calibrated)
         _, frame = self.cap.read()
@@ -131,7 +115,7 @@ class faceAimer():
             # if spacebar is pressed, move to next stage
             key = cv.waitKey(1)
             if key == 32:
-                calibration_point = self.getNoseAndPosePoint(frame)[1]
+                calibration_point = self.trackFace(frame)[1]
                 if calibration_point == (-1, -1):
                     print("COULDN'T FIND FACE, TRY AGAIN")
                 else:
@@ -163,8 +147,8 @@ class faceAimer():
 
         return
 
-    def getNoseAndPosePoint(self, frame):
-        # returns x and y values for nose tip and pose position. Not scaled or adjusted
+    def trackFace(self, frame):
+        # updates face landmarks and returns x and y values for nose tip and pose position. Not scaled or adjusted
 
         # convert frame to grayscale
         gray = cv.cvtColor(frame, cv.COLOR_BGR2GRAY)
@@ -177,27 +161,10 @@ class faceAimer():
 
             # get facial landmarks
             face = faces[0]
-            self.landmarks = self.predictor(gray, face)
-            self.landmarks = face_utils.shape_to_np(self.landmarks)
-
-            # get relevant points
-            self.image_pts = np.array([self.landmarks[33],      # nose tip
-                                       self.landmarks[28],      # mid nose
-                                       self.landmarks[8],       # chin
-                                       self.landmarks[36],      # right eye
-                                       self.landmarks[45],      # left eye
-                                       self.landmarks[48],      # mouth right
-                                       self.landmarks[54],      # mouth left
-                                       self.landmarks[19],      # right eyebrow
-                                       self.landmarks[24],      # left eyebrow
-                                       self.landmarks[1],       # right cheek
-                                       self.landmarks[15],      # left cheek
-                                       self.landmarks[5],       # right jaw
-                                       self.landmarks[11]       # left jaw
-                                       ], dtype=np.float32)
+            self.landmarks = face_utils.shape_to_np(self.predictor(gray, face), dtype=np.float32)
 
             # solve for PnP
-            (_, rot_vect, trans_vect) = cv.solvePnP(self.model_points, self.image_pts, self.camera_matrix, self.dist_coeffs)
+            (_, rot_vect, trans_vect) = cv.solvePnP(self.model_points, self.landmarks, self.camera_matrix, self.dist_coeffs)
 
             # get pose point projection in terms of image
             (pose_pt_2D, _) = cv.projectPoints(np.array([0.0, 0.0, 1000]), rot_vect, trans_vect, self.camera_matrix, self.dist_coeffs)
@@ -256,7 +223,7 @@ class faceAimer():
             frame = cv.flip(frame, 1)
 
             # get current nose & pose position
-            (self.nosePoint, self.posePoint) = self.getNoseAndPosePoint(frame)
+            (self.nosePoint, self.posePoint) = self.trackFace(frame)
 
             # add targets to controller queue
             if self.paused:
@@ -290,8 +257,8 @@ class faceAimer():
                 poseCenterInt = (int(self.pose_center[0]), int(self.pose_center[1]))
 
                 # draw facial landmarks on frame
-                for tracked_pts in self.image_pts:
-                    cv.circle(frame, (int(tracked_pts[0]), int(tracked_pts[1])), 3, self.landmarks_color, -1)
+                for tracked_pts in self.landmarks:
+                    cv.circle(frame, (int(tracked_pts[0]), int(tracked_pts[1])), 1, self.landmarks_color, -1)
 
                 # draw mode-specific overlays
                 if self.control_mode == 'stick':
@@ -326,6 +293,8 @@ class faceAimer():
                     self.control_mode = 'stick'
                 elif self.control_mode == 'stick':
                     self.control_mode = 'mouse'
+                # set new control text
+                self.switch_mode_text = f"'TAB' to switch control modes | {self.control_mode}"
                 # initialize new controller thread
                 self.stop_controller_event.clear()
                 self.startControllerThread()
