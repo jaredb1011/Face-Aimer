@@ -98,14 +98,32 @@ class faceAimer():
             (-115.0,170.0,-135.0),      # 39 - Right eye
             (-160.0,155.0,-135.0),      # 40 - Right eye
             (-200.0,155.0,-135.0),      # 41 - Right eye
-            (115.0,170.0,-135.0),     # 42 - left eye
-            (160.0,185.0,-135.0),     # 43 - left eye
-            (200.0,185.0,-135.0),     # 44 - left eye
-            (240.0,170.0,-135.0),     # 45 - left eye
-            (200.0,155.0,-135.0),     # 46 - left eye
-            (160.0,155.0,-135.0),     # 47 - left eye
-            (-150.0, -150.0, -125.0),   # 48 - right mouth corner
-            (150.0, -150.0, -125.0)     # 54 - left mouth corner
+            (115.0,170.0,-135.0),       # 42 - left eye
+            (160.0,185.0,-135.0),       # 43 - left eye
+            (200.0,185.0,-135.0),       # 44 - left eye
+            (240.0,170.0,-135.0),       # 45 - left eye
+            (200.0,155.0,-135.0),       # 46 - left eye
+            (160.0,155.0,-135.0),       # 47 - left eye
+            (-150.0, -150.0, -125.0),   # 48 - outer lips
+            (-100.0,-115.0,-115.0),     # 49 - outer lips
+            (-50.0,-95.0,-110.0),       # 50 - outer lips
+            (0.0,-100.0,-105.0),        # 51 - outer lips
+            (50,-95.0,-110.0),          # 52 - outer lips
+            (100,-115.0,-115.0),        # 53 - outer lips
+            (150.0,-150.0,-125.0),      # 54 - outer lips
+            (100,-180.0,-115.0),        # 55 - outer lips
+            (50,-195.0,-110.0),         # 56 - outer lips
+            (0,-200.0,-105.0),          # 57 - outer lips
+            (-50,-195.0,-110.0),        # 58 - outer lips
+            (-100,-180.0,-115.0),       # 59 - outer lips
+            (-100,-145.0,-125.0),       # 60 - inner lips
+            (-50,-130.0,-125.0),        # 61 - inner lips
+            (0,-125.0,-125.0),          # 62 - inner lips
+            (50,-130.0,-125.0),         # 63 - inner lips
+            (100,-145.0,-125.0),        # 64 - inner lips
+            (50,-165.0,-125.0),         # 65 - inner lips
+            (0,-170.0,-125.0),          # 66 - inner lips
+            (-50,-165.0,-125.0)         # 67 - inner lips
         ], dtype=np.float64)
 
         # camera parameters (default params but could be calibrated)
@@ -266,8 +284,26 @@ class faceAimer():
                                        self.landmarks[45],      # left eye
                                        self.landmarks[46],      # left eye
                                        self.landmarks[47],      # left eye
-                                       self.landmarks[48],      # mouth right
-                                       self.landmarks[54]       # mouth left
+                                       self.landmarks[48],      # outer lips
+                                       self.landmarks[49],      # outer lips
+                                       self.landmarks[50],      # outer lips
+                                       self.landmarks[51],      # outer lips
+                                       self.landmarks[52],      # outer lips
+                                       self.landmarks[53],      # outer lips
+                                       self.landmarks[54],      # outer lips
+                                       self.landmarks[55],      # outer lips
+                                       self.landmarks[56],      # outer lips
+                                       self.landmarks[57],      # outer lips
+                                       self.landmarks[58],      # outer lips
+                                       self.landmarks[59],      # outer lips
+                                       self.landmarks[60],      # inner lips
+                                       self.landmarks[61],      # inner lips
+                                       self.landmarks[62],      # inner lips
+                                       self.landmarks[63],      # inner lips
+                                       self.landmarks[64],      # inner lips
+                                       self.landmarks[65],      # inner lips
+                                       self.landmarks[66],      # inner lips
+                                       self.landmarks[67]       # inner lips
                                        ], dtype=np.float32)
 
             # solve for PnP
