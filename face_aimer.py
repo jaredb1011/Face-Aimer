@@ -92,10 +92,18 @@ class faceAimer():
             (0.0, 0.0, 0.0),            # 33 - nose tip middle
             (30.0, 5.0, -15.0),         # 34 - nose tip left
             (60.0, 15.0, -30.0),        # 35 - nose tip left
-            (-240.0, 170.0, -135.0),    # 36 - Right eye outer corner
-            (-115.0, 170.0, -135.0),    # 39 - Right eye inner corner
-            (115.0, 170.0, -135.0),     # 42 - left eye inner corner
-            (240.0, 170.0, -135.0),     # 45 - left eye outer corner
+            (-240.0, 170.0, -135.0),    # 36 - Right eye
+            (-200.0,185.0,-135.0),      # 37 - Right eye
+            (-160.0,185.0,-135.0),      # 38 - Right eye
+            (-115.0,170.0,-135.0),      # 39 - Right eye
+            (-160.0,155.0,-135.0),      # 40 - Right eye
+            (-200.0,155.0,-135.0),      # 41 - Right eye
+            (115.0,170.0,-135.0),     # 42 - left eye
+            (160.0,185.0,-135.0),     # 43 - left eye
+            (200.0,185.0,-135.0),     # 44 - left eye
+            (240.0,170.0,-135.0),     # 45 - left eye
+            (200.0,155.0,-135.0),     # 46 - left eye
+            (160.0,155.0,-135.0),     # 47 - left eye
             (-150.0, -150.0, -125.0),   # 48 - right mouth corner
             (150.0, -150.0, -125.0)     # 54 - left mouth corner
         ], dtype=np.float64)
@@ -246,10 +254,18 @@ class faceAimer():
                                        self.landmarks[33],      # nose tip center
                                        self.landmarks[34],      # nose tip left
                                        self.landmarks[35],      # nose tip left
-                                       self.landmarks[36],      # right eye outer corner
-                                       self.landmarks[39],      # right eye inner corner
-                                       self.landmarks[42],      # left eye inner corner
-                                       self.landmarks[45],      # left eye outer corner
+                                       self.landmarks[36],      # right eye
+                                       self.landmarks[37],      # right eye
+                                       self.landmarks[38],      # right eye
+                                       self.landmarks[39],      # right eye
+                                       self.landmarks[40],      # right eye
+                                       self.landmarks[41],      # right eye
+                                       self.landmarks[42],      # left eye
+                                       self.landmarks[43],      # left eye
+                                       self.landmarks[44],      # left eye
+                                       self.landmarks[45],      # left eye
+                                       self.landmarks[46],      # left eye
+                                       self.landmarks[47],      # left eye
                                        self.landmarks[48],      # mouth right
                                        self.landmarks[54]       # mouth left
                                        ], dtype=np.float32)
