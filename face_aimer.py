@@ -73,8 +73,16 @@ class faceAimer():
             (330.0,-50.0,-250.0),       # 14 - left cheek
             (345.0,35.0,-280.0),        # 15 - left cheek
             (350.0,120.0,-310.0),       # 16 - left cheek
-            (-225.0, 245.0, -105.0),    # 19 - right middle eyebrow
-            (225.0, 245.0, -105.0),     # 24 - left middle eyebrow
+            (-300.0,235.0,-140.0),      # 17 - right eyebrow
+            (-260.0,245.0,-120.0),      # 18 - right eyebrow
+            (-215.0,250.0,-110.0),      # 19 - right eyebrow
+            (-160.0,245.0,-100.0),      # 20 - right eyebrow
+            (-110.0,240.0,-90.0),       # 21 - right eyebrow
+            (110.0,240.0,-90.0),        # 22 - left eyebrow
+            (160.0,245.0,-100.0),       # 23 - left eyebrow
+            (215.0,250.0,-110.0),       # 24 - left eyebrow
+            (260.0,245.0,-120.0),       # 25 - left eyebrow
+            (300.0,235.0,-140.0),       # 26 - left eyebrow
             (0.0, 170.0, -100.0),       # 27 - top of nose
             (0.0, 130.0, -55.0),        # 28 - middle of nose
             (0.0, 90.0, -30.0),         # 29 - middle of nose
@@ -219,8 +227,16 @@ class faceAimer():
                                        self.landmarks[14],      # left cheek
                                        self.landmarks[15],      # left cheek
                                        self.landmarks[16],      # left cheek
+                                       self.landmarks[17],      # right eyebrow
+                                       self.landmarks[18],      # right eyebrow
                                        self.landmarks[19],      # right eyebrow
+                                       self.landmarks[20],      # right eyebrow
+                                       self.landmarks[21],      # right eyebrow
+                                       self.landmarks[22],      # left eyebrow
+                                       self.landmarks[23],      # left eyebrow
                                        self.landmarks[24],      # left eyebrow
+                                       self.landmarks[25],      # left eyebrow
+                                       self.landmarks[26],      # left eyebrow
                                        self.landmarks[27],      # top nose
                                        self.landmarks[28],      # mid nose
                                        self.landmarks[29],      # mid nose
@@ -333,7 +349,7 @@ class faceAimer():
 
                 # draw facial landmarks on frame
                 for tracked_pts in self.image_pts:
-                    cv.circle(frame, (int(tracked_pts[0]), int(tracked_pts[1])), 2, self.landmarks_color, -1)
+                    cv.circle(frame, (int(tracked_pts[0]), int(tracked_pts[1])), 1, self.landmarks_color, -1)
 
                 # draw mode-specific overlays
                 if self.control_mode == 'stick':
