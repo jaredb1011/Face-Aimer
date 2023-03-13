@@ -3,3 +3,6 @@ shape_predictor_68_face_landmarks.dat
 
 # Ignore pycache
 __pycache__/
+
+# Ignorde vscode
+.vscode/

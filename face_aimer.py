@@ -99,8 +99,7 @@ class faceAimer():
         # keep track of which stage of calibration
         calibrating = True
         stage = 0
-        calibration_positions = ['top left',
-                                 'top right', 'bottom right', 'bottom left']
+        calibration_positions = ['top left', 'top right', 'bottom right', 'bottom left']
         calibration_points = []
 
         while calibrating:
@@ -155,33 +154,35 @@ class faceAimer():
 
         # detect a face
         faces = self.detector(gray)
-
-        # if a face was detected
-        if len(faces):
-
-            # get facial landmarks
-            face = faces[0]
-            self.landmarks = face_utils.shape_to_np(self.predictor(gray, face), dtype=np.float32)
-
-            # solve for PnP
-            (_, rot_vect, trans_vect) = cv.solvePnP(self.model_points, self.landmarks, self.camera_matrix, self.dist_coeffs)
-
-            # get pose point projection in terms of image
-            (pose_pt_2D, _) = cv.projectPoints(np.array([0.0, 0.0, 1000]), rot_vect, trans_vect, self.camera_matrix, self.dist_coeffs)
-
-            nosePoint = (self.landmarks[33][0], self.landmarks[33][1])
-            posePoint = (pose_pt_2D[0][0][0], pose_pt_2D[0][0][1])
-
-            return (nosePoint, posePoint)
-
-        else:
+        
+        if not len(faces):
             # if can't find face, just return negative
             return ((-1, -1), (-1, -1))
 
+        # get facial landmarks
+        face = faces[0]
+        self.landmarks = face_utils.shape_to_np(self.predictor(gray, face), dtype=np.float32)
+
+        # solve for PnP
+        (_, rot_vect, trans_vect) = cv.solvePnP(self.model_points, self.landmarks, self.camera_matrix, self.dist_coeffs)
+
+        # get pose point projection in terms of image
+        (pose_pt_2D, _) = cv.projectPoints(np.array([0.0, 0.0, 1000]), rot_vect, trans_vect, self.camera_matrix, self.dist_coeffs)
+
+        nosePoint = (self.landmarks[33][0], self.landmarks[33][1])
+        posePoint = (pose_pt_2D[0][0][0], pose_pt_2D[0][0][1])
+
+        return (nosePoint, posePoint)          
+
     def shutdown(self):
+        print("Exiting Face Aimer Program...")
         # stop current controller thread
         self.stop_controller_event.set()
-        self.controller_thread.join()
+        try:
+            self.controller_thread.join()
+        except AttributeError:
+            pass
+
         # release resources
         self.cap.release()
         cv.destroyAllWindows()

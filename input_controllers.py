@@ -177,7 +177,7 @@ class stickController():
                 delta_y = self.pose_point[1] - self.pose_center[1]
 
                 # get distance from deadzone
-                distance  = sqrt(delta_x**2 + delta_y**2)
+                distance = sqrt(delta_x**2 + delta_y**2)
                 deadzone_dist = distance - self.deadzone_radius
 
                 # if outside the deadzone
